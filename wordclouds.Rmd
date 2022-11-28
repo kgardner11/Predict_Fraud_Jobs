@@ -1,0 +1,149 @@
+---
+title: "bzan542_wordcloud"
+author: "Michalea Shofner"
+date: '2022-11-28'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(wordcloud)
+library(RColorBrewer)
+library(wordcloud2)
+library(dplyr)
+library(tm)
+```
+
+
+```{r}
+fake_job_postings <- read.csv("fake_job_postings_clean.csv")
+
+fraud_jobs <- fake_job_postings %>%
+  filter(fraudulent == 1) %>%
+  select(company_profile, description, requirements)
+real_jobs <- fake_job_postings %>%
+  filter(fraudulent == 0) %>%
+  select(company_profile, description, requirements)
+
+#as a corpus
+fraud_jobs_desc <- Corpus(VectorSource(fraud_jobs$description))
+
+#cleaning data
+fraud_jobs_desc <- tm_map(fraud_jobs_desc, stripWhitespace)
+fraud_jobs_desc <- tm_map(fraud_jobs_desc, tolower)
+fraud_jobs_desc <- tm_map(fraud_jobs_desc, removeWords, stopwords("english"))
+#fraud_jobs_desc <- tm_map(fraud_jobs_desc, stemDocument)
+fraud_jobs_desc <- tm_map(fraud_jobs_desc, removePunctuation)
+fraud_jobs_desc <- tm_map(fraud_jobs_desc, removeNumbers)
+
+#fraud jobs desc word cloud
+wordcloud(fraud_jobs_desc
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+#as a corpus
+fraud_jobs_profile <- Corpus(VectorSource(fraud_jobs$company_profile))
+
+#cleaning data
+fraud_jobs_profile <- tm_map(fraud_jobs_profile, stripWhitespace)
+fraud_jobs_profile <- tm_map(fraud_jobs_profile, tolower)
+fraud_jobs_profile <- tm_map(fraud_jobs_profile, removeWords, stopwords("english"))
+fraud_jobs_profile <- tm_map(fraud_jobs_profile, removePunctuation)
+fraud_jobs_profile <- tm_map(fraud_jobs_profile, removeNumbers)
+
+#fraud jobs company profile word cloud
+wordcloud(fraud_jobs_profile
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+#as a corpus
+fraud_jobs_requirements <- Corpus(VectorSource(fraud_jobs$requirements))
+
+#cleaning data
+fraud_jobs_requirements <- tm_map(fraud_jobs_requirements, stripWhitespace)
+fraud_jobs_requirements <- tm_map(fraud_jobs_requirements, tolower)
+fraud_jobs_requirements <- tm_map(fraud_jobs_requirements, removeWords, stopwords("english"))
+fraud_jobs_requirements <- tm_map(fraud_jobs_requirements, removePunctuation)
+fraud_jobs_requirements <- tm_map(fraud_jobs_requirements, removeNumbers)
+
+#fraud jobs requirements word cloud
+wordcloud(fraud_jobs_requirements
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+#as a corpus
+real_jobs_desc <- Corpus(VectorSource(real_jobs$description))
+
+#cleaning data
+real_jobs_desc <- tm_map(real_jobs_desc, stripWhitespace)
+real_jobs_desc <- tm_map(real_jobs_desc, tolower)
+real_jobs_desc <- tm_map(real_jobs_desc, removeWords, stopwords("english"))
+real_jobs_desc <- tm_map(real_jobs_desc, removePunctuation)
+real_jobs_desc <- tm_map(real_jobs_desc, removeNumbers)
+
+#real jobs description word cloud
+wordcloud(real_jobs_desc
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+#as a corpus
+real_jobs_profile <- Corpus(VectorSource(real_jobs$company_profile))
+
+#cleaning data
+real_jobs_profile <- tm_map(real_jobs_profile, stripWhitespace)
+real_jobs_profile <- tm_map(real_jobs_profile, tolower)
+real_jobs_profile <- tm_map(real_jobs_profile, removeWords, stopwords("english"))
+real_jobs_profile <- tm_map(real_jobs_profile, removePunctuation)
+real_jobs_profile <- tm_map(real_jobs_profile, removeNumbers)
+
+#real jobs company profile word cloud
+wordcloud(real_jobs_profile
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+#as a corpus
+real_jobs_requirements <- Corpus(VectorSource(real_jobs$requirements))
+
+#cleaning data
+real_jobs_requirements <- tm_map(real_jobs_requirements, stripWhitespace)
+real_jobs_requirements <- tm_map(real_jobs_requirements, tolower)
+real_jobs_requirements <- tm_map(real_jobs_requirements, removeWords, stopwords("english"))
+real_jobs_requirements <- tm_map(real_jobs_requirements, removePunctuation)
+real_jobs_requirements <- tm_map(real_jobs_requirements, removeNumbers)
+
+#real jobs requirements word cloud
+wordcloud(real_jobs_requirements
+        , scale=c(2,0.5)     # Set min and max scale
+        , max.words=50      # Set top n words
+        , min.freq = 5
+        , random.order=FALSE # Words in decreasing freq
+        , rot.per=0.2       # % of vertical words
+        , use.r.layout=FALSE # Use C++ collision detection
+        , colors=brewer.pal(8, "Dark2"))
+
+```
